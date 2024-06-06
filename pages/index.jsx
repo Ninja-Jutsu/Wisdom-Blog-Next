@@ -1,13 +1,31 @@
 import Hero from '../components/home-page/Hero'
+import FeaturedPosts from '../components/home-page/FeaturedPosts'
+import { getFeaturedPosts } from '../lib/posts-util'
+import Head from 'next/head'
 
-export default function HomePage() {
+export default function HomePage(props) {
   return (
     <>
+      <Head>
+        <title>Max' Blog</title>
+        <meta
+          name='description'
+          content='I post about programming and web development.'
+        />
+      </Head>
       <Hero />
-      {/* <FeaturedPosts /> */}
+      <FeaturedPosts posts={props.posts} />
     </>
   )
 }
 
-// 1- Hero Section > present ourselves
-// 2- Featured Posts Section
+export function getStaticProps() {
+  const featuredPosts = getFeaturedPosts()
+
+  return {
+    props: {
+      posts: featuredPosts,
+    },
+    revalidate: 3600,
+  }
+}
